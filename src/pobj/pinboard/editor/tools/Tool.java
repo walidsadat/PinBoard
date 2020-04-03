@@ -2,6 +2,8 @@ package pobj.pinboard.editor.tools;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
+import pobj.pinboard.document.Board;
+import pobj.pinboard.document.ClipRect;
 import pobj.pinboard.editor.EditorInterface;
 
 public interface Tool {
