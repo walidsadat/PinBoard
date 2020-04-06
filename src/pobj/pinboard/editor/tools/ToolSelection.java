@@ -5,6 +5,10 @@ import javafx.scene.input.MouseEvent;
 import pobj.pinboard.document.Clip;
 import pobj.pinboard.editor.EditorInterface;
 
+/**
+ * Classe de l'outil selection
+ * @author walidsadat
+ */
 public class ToolSelection implements Tool {
 	double x;
 	double y;

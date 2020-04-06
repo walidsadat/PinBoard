@@ -1,7 +1,4 @@
 package pobj.pinboard.editor;
-
-
-
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
@@ -29,54 +26,24 @@ import pobj.pinboard.editor.tools.ToolSelection;
 public class EditorWindow implements EditorInterface, ClipboardListener {
 	private Board board;
 	private Canvas canvas;
-	private Tool tool;
-	private Selection selection = new Selection();
-	MenuItem paste = new MenuItem("Paste");
+	private Selection selection;
+	MenuItem paste;
+	Tool tool;
 	
 	public EditorWindow(Stage stage) {
 		Clipboard.getInstance().addListener(this);
 		board = new Board();
+		selection = new Selection();
 		stage.setTitle("PinBoard - <untitled>");
-		//MenuBar
-		Menu file = new Menu("File");
-		MenuItem new_ = new MenuItem("New");
-		new_.setOnAction(e -> {new EditorWindow(new Stage());draw();});
-		MenuItem close = new MenuItem("Close");
-		file.getItems().addAll(new_,close);
-		close.setOnAction(e ->{Clipboard.getInstance().removeListener(this);stage.close();});
-		Menu edit = new Menu("Edit");
-		MenuItem copy = new MenuItem("Copy");
-		copy.setOnAction(e->{Clipboard.getInstance().copyToClipboard(selection.getContents());draw();});
-		if(Clipboard.getInstance().isEmpty())
-			paste.setDisable(true);
-		paste.setOnAction(e->{board.addClip(Clipboard.getInstance().copyFromClipboard());draw();});
-		MenuItem delete = new MenuItem("Delete");
-		delete.setOnAction(e->{board.removeClip(selection.getContents());draw();});
-		edit.getItems().addAll(copy,paste,delete);
-		Menu tools = new Menu("Tools");
-		MenuItem line = new MenuItem("Line");
-		MenuItem box = new MenuItem("Rectangle");
-		MenuItem ellipse = new MenuItem("Ellipse");
-		MenuItem img = new MenuItem("Image");
-		MenuItem select = new MenuItem("Selection");
-		tools.getItems().addAll(line,box,ellipse,img,select);
-		close.setOnAction(e -> stage.close());
-		MenuBar menuBar = new MenuBar();
-		menuBar.getMenus().addAll(file,edit,tools);
-		//ToolBar
-		Button bLine = new Button("Line");
-		Button bBox = new Button("Rectangle");
-		Button bEllipse = new Button("Ellipse");
-		Button bImg = new Button("Image");
-		Button bSelect = new Button("Select");
-		ToolBar toolBar = new ToolBar();
-		//Palette de couleur
+		
+		//Label
+		Label label = new Label("Line tool");
+		
+		//ColorPicker
 		ColorPicker colorPicker = new ColorPicker(Color.BLACK);
-		toolBar.getItems().addAll(bLine,new Separator(),bBox,new Separator(),bEllipse,new Separator(),bImg,new Separator(),bSelect,new Separator(),colorPicker);
-		tool = new ToolLine(colorPicker.getValue());
 		colorPicker.setOnAction(e->{if(!selection.getContents().isEmpty()) {
-										for(Clip c:selection.getContents())
-											c.setColor(colorPicker.getValue());
+									for(Clip c:selection.getContents())
+										c.setColor(colorPicker.getValue());
 									draw();
 									}
 									if(tool instanceof ToolLine)
@@ -85,49 +52,106 @@ public class EditorWindow implements EditorInterface, ClipboardListener {
 										tool = new ToolRect(colorPicker.getValue());
 									else if(tool instanceof ToolEllipse)
 										tool = new ToolEllipse(colorPicker.getValue());});
-		//Label
-		Label label = new Label("Filled Line tool");
-		line.setOnAction(e->{tool = new ToolLine(colorPicker.getValue()); label.setText("Filled line tool");});
-		box.setOnAction(e->{tool = new ToolRect(colorPicker.getValue()); label.setText("Filled box tool");});
-		ellipse.setOnAction(e->{tool = new ToolEllipse(colorPicker.getValue());label.setText("Filled ellipse tool");});
-		select.setOnAction(e->{tool = new ToolSelection(); label.setText("Filled select tool");});
-		bLine.setOnAction(e->{tool = new ToolLine(colorPicker.getValue()); label.setText("Filled line tool");});
-		bBox.setOnAction(e->{tool = new ToolRect(colorPicker.getValue()); label.setText("Filled box tool");});
-		bEllipse.setOnAction(e->{tool = new ToolEllipse(colorPicker.getValue());label.setText("Filled ellipse tool");});
-		img.setOnAction(e->{FileChooser fileChooser = new FileChooser();
-						fileChooser.setTitle("Open Resource File");
-						fileChooser.getExtensionFilters().addAll(
-						new ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"),
-						new ExtensionFilter("All Files", "*.*"));
-						tool = new ToolImage(fileChooser.showOpenDialog(stage));label.setText("Filled image tool");});
-		bImg.setOnAction(e->{FileChooser fileChooser = new FileChooser();
-			fileChooser.setTitle("Open Resource File");
-			fileChooser.getExtensionFilters().addAll(
-					new ExtensionFilter("Image Files", "*.png", "*.jpg", "*.tif"),
-					new ExtensionFilter("All Files", "*.*"));
-			tool = new ToolImage(fileChooser.showOpenDialog(stage));label.setText("Filled image tool");});
-		bSelect.setOnAction(e->{tool = new ToolSelection(); label.setText("Filled select tool");});
-		VBox vBox = new VBox(menuBar,toolBar);
+		tool = new ToolLine(colorPicker.getValue());
+		
+		//MenuBar
+			//Menu File
+				//Ouverture nouvelle fenêtre
+				MenuItem new_ = new MenuItem("New");
+				new_.setOnAction(e -> {new EditorWindow(new Stage());draw();});
+				//Fermeture fenêtre courante
+				MenuItem close = new MenuItem("Close");
+				close.setOnAction(e ->{Clipboard.getInstance().removeListener(this);stage.close();});
+			Menu file = new Menu("File");
+			file.getItems().addAll(new_,close);
+			//Menu Edit
+				//Copie d'élements
+				MenuItem copy = new MenuItem("Copy");
+				copy.setOnAction(e->{Clipboard.getInstance().copyToClipboard(selection.getContents());draw();});
+				//Collage d'elements
+				paste = new MenuItem("Paste");
+				if(Clipboard.getInstance().isEmpty())
+					paste.setDisable(true);
+				paste.setOnAction(e->{board.addClip(Clipboard.getInstance().copyFromClipboard());draw();});
+				//Suppression d'elements
+				MenuItem delete = new MenuItem("Delete");
+				delete.setOnAction(e->{board.removeClip(selection.getContents());draw();});
+			Menu edit = new Menu("Edit");
+			edit.getItems().addAll(copy,paste,delete);
+			//Menu Tools
+				//Ligne
+				MenuItem line = new MenuItem("Line");
+				line.setOnAction(e->{tool = new ToolLine(colorPicker.getValue()); label.setText("Line tool");});
+				//Rectangle
+				MenuItem box = new MenuItem("Rectangle");
+				box.setOnAction(e->{tool = new ToolRect(colorPicker.getValue()); label.setText("Filled box tool");});
+				//Ellipse
+				MenuItem ellipse = new MenuItem("Ellipse");
+				ellipse.setOnAction(e->{tool = new ToolEllipse(colorPicker.getValue());label.setText("Filled ellipse tool");});
+				//Image
+				MenuItem img = new MenuItem("Image");
+				img.setOnAction(e->{FileChooser fileChooser = new FileChooser();
+									fileChooser.setTitle("Open Resource File");
+									fileChooser.getExtensionFilters().addAll(
+											new ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"),
+											new ExtensionFilter("All Files", "*.*"));
+									tool = new ToolImage(fileChooser.showOpenDialog(stage));label.setText("Image tool");});
+				//Selection
+				MenuItem select = new MenuItem("Selection");
+				select.setOnAction(e->{tool = new ToolSelection(); label.setText("Selection tool");});
+			Menu tools = new Menu("Tools");
+			tools.getItems().addAll(line,box,ellipse,img,select);
+		MenuBar menuBar = new MenuBar();
+		menuBar.getMenus().addAll(file,edit,tools);
+		
+		//ToolBar
+			//Ligne
+			Button bLine = new Button("Line");
+			bLine.setOnAction(e->{tool = new ToolLine(colorPicker.getValue()); label.setText("Line tool");});
+			//Rectangle
+			Button bBox = new Button("Rectangle");
+			bBox.setOnAction(e->{tool = new ToolRect(colorPicker.getValue()); label.setText("Filled box tool");});
+			//Ellipse
+			Button bEllipse = new Button("Ellipse");
+			bEllipse.setOnAction(e->{tool = new ToolEllipse(colorPicker.getValue());label.setText("Filled ellipse tool");});
+			//Image
+			Button bImg = new Button("Image");
+			bImg.setOnAction(e->{FileChooser fileChooser = new FileChooser();
+								fileChooser.setTitle("Open Resource File");
+								fileChooser.getExtensionFilters().addAll(
+										new ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"),
+										new ExtensionFilter("All Files", "*.*"));
+								tool = new ToolImage(fileChooser.showOpenDialog(stage));label.setText("Image tool");});
+			//Selection
+			Button bSelect = new Button("Select");
+			bSelect.setOnAction(e->{tool = new ToolSelection(); label.setText("Selection tool");});
+		ToolBar toolBar = new ToolBar();
+		toolBar.getItems().addAll(bLine,new Separator(),bBox,new Separator(),bEllipse,new Separator(),bImg,new Separator(),bSelect,new Separator(),colorPicker);
+		
 		//Canvas
 		canvas = new Canvas(800,600);
-		vBox.getChildren().add(canvas);
-		stage.setScene(new Scene(vBox));
 		canvas.setOnMousePressed(e -> {tool.press(this, e); draw(); tool.drawFeedback(this, canvas.getGraphicsContext2D());});
 		canvas.setOnMouseDragged(e -> {tool.drag(this, e); draw();tool.drawFeedback(this, canvas.getGraphicsContext2D());});
 		canvas.setOnMouseReleased(e-> {tool.release(this, e); draw();});
 
+		//VBox
+		VBox vBox = new VBox(menuBar,toolBar,canvas,new Separator(),label);
 		
-		vBox.getChildren().addAll(new Separator(),label);
+		//Stage
+		stage.setScene(new Scene(vBox));
 		stage.show();
 	}
+	
 	@Override
 	public Board getBoard() {
 		return board;
 	}
+	
 	@Override
 	public Selection getSelection() {
 		return selection;
 	}
+	
 	@Override
 	public CommandStack getUndoStack() {
 		return null;

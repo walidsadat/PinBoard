@@ -6,14 +6,24 @@ import javafx.scene.paint.Color;
 import pobj.pinboard.document.ClipRect;
 import pobj.pinboard.editor.EditorInterface;
 
+/**
+ * Classe de l'outil rectangle
+ * @author walidsadat
+ */
 public class ToolRect implements Tool {
 	ClipRect rect;
 	double x,y;
 	Color color;
+	/**
+	 * Constructeur de l'outil rectangle
+	 * @param color
+	 * 			Couleur du rectangle
+	 */
 	public ToolRect(Color color) {
 		this.color = color;
 	}
 
+	
 	@Override
 	public void press(EditorInterface i, MouseEvent e) {
 		x = e.getX();

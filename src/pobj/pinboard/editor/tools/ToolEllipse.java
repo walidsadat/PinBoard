@@ -6,10 +6,20 @@ import javafx.scene.paint.Color;
 import pobj.pinboard.document.ClipEllipse;
 import pobj.pinboard.editor.EditorInterface;
 
+/**
+ * Classe de l'outil ellipse
+ * @author walidsadat
+ */
 public class ToolEllipse implements Tool {
 	ClipEllipse ellipse;
 	double x,y;
 	Color color;
+	
+	/**
+	 * Constructeur de l'outil ellipse
+	 * @param color
+	 * 			Couleur de l'ellipse
+	 */
 	public ToolEllipse(Color color) {
 		this.color = color;
 	}

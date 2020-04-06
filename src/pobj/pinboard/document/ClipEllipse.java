@@ -3,13 +3,32 @@ package pobj.pinboard.document;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
+/**
+ * Classe d'une ellipse
+ * @author walidsadat
+ */
 public class ClipEllipse extends AbstractClip {
 	
-
+	/**
+	 * Constructeur d'une ellipse
+	 * @param left
+	 * 		coordonnée gauche
+	 * @param top
+	 * 		coordonnée haute
+	 * @param right
+	 * 		coordonnée droite
+	 * @param bottom
+	 * 		coordonnée basse
+	 * @param color
+	 * 		Couleur de l'ellipse
+	 */
 	public ClipEllipse(double left, double top, double right, double bottom, Color color){
 		super(left, top, right, bottom, color);
 	}
 
+	/**
+	 * Dessine l'ellipse
+	 */
 	@Override
 	public void draw(GraphicsContext ctx) {
 		ctx.setFill(getColor());
@@ -18,6 +37,9 @@ public class ClipEllipse extends AbstractClip {
 		ctx.fillOval(getLeft(),getTop(),getRight()-getLeft(),getBottom()-getTop());
 	}
 
+	/**
+	 * Vérifie si le point de coordonnées (x,y) est à l'interieur de l'element
+	 */
 	@Override
 	public boolean isSelected(double x, double y) {
 		double cx = (getLeft() + getRight())/2;
@@ -28,6 +50,9 @@ public class ClipEllipse extends AbstractClip {
 		
 	}
 
+	/**
+	 * Retourne une copie de l'ellipse
+	 */
 	@Override
 	public Clip copy() {
 		return new ClipEllipse(getLeft(), getTop(), getRight(), getBottom(), getColor());
