@@ -18,30 +18,22 @@ public class ToolRect implements Tool {
 
 	@Override
 	public void drag(EditorInterface i, MouseEvent e) {
-			i.getBoard().removeClip(rect);
 			rect.setGeometry(x,y,e.getX(),e.getY());
 			if(rect.getLeft() > rect.getRight())
 				rect.setGeometry(rect.getRight(),rect.getTop(),rect.getLeft(),rect.getBottom());
 			if(rect.getTop() > rect.getBottom())
 				rect.setGeometry(rect.getLeft(),rect.getBottom(),rect.getRight(),rect.getTop());
-			i.getBoard().addClip(rect);
 	}
 
 	@Override
 	public void release(EditorInterface i, MouseEvent e) {
-		i.getBoard().removeClip(rect);
-		rect.setGeometry(x,y,e.getX(),e.getY());
-		if(rect.getLeft() > rect.getRight())
-			rect.setGeometry(rect.getRight(),rect.getTop(),rect.getLeft(),rect.getBottom());
-		if(rect.getTop() > rect.getBottom())
-			rect.setGeometry(rect.getLeft(),rect.getBottom(),rect.getRight(),rect.getTop());
 		rect.setColor(Color.BLACK);
 		i.getBoard().addClip(rect);
 	}
 
 	@Override
 	public void drawFeedback(EditorInterface i, GraphicsContext gc) {
-			i.getBoard().draw(gc);
+			rect.draw(gc);
 	}
 
 	@Override

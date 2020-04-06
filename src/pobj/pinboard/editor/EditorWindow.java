@@ -85,8 +85,8 @@ public class EditorWindow implements EditorInterface {
 		canvas = new Canvas(800,600);
 		vBox.getChildren().add(canvas);
 		stage.setScene(new Scene(vBox));
-		canvas.setOnMousePressed(e -> {tool.press(this, e); draw();});
-		canvas.setOnMouseDragged(e -> {tool.drag(this, e); draw();});
+		canvas.setOnMousePressed(e -> {tool.press(this, e); draw(); tool.drawFeedback(this, canvas.getGraphicsContext2D());});
+		canvas.setOnMouseDragged(e -> {tool.drag(this, e); draw();tool.drawFeedback(this, canvas.getGraphicsContext2D());});
 		canvas.setOnMouseReleased(e-> {tool.release(this, e); draw();});
 
 		Separator separator = new Separator();
@@ -107,6 +107,6 @@ public class EditorWindow implements EditorInterface {
 	}
 	
 	public void draw() {
-		tool.drawFeedback(this, canvas.getGraphicsContext2D());
+		board.draw(canvas.getGraphicsContext2D());
 	}
 }

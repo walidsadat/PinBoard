@@ -18,21 +18,18 @@ public class ToolLine implements Tool {
 
 	@Override
 	public void drag(EditorInterface i, MouseEvent e) {
-			i.getBoard().removeClip(line);
 			line.setGeometry(x,y,e.getX(),e.getY());
-			i.getBoard().addClip(line);
 	}
 
 	@Override
 	public void release(EditorInterface i, MouseEvent e) {
-		i.getBoard().removeClip(line);
 		line.setGeometry(x,y,e.getX(),e.getY());
 		i.getBoard().addClip(line);
 	}
 
 	@Override
 	public void drawFeedback(EditorInterface i, GraphicsContext gc) {
-			i.getBoard().draw(gc);
+			line.draw(gc);
 	}
 
 	@Override

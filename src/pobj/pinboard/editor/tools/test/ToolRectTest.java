@@ -25,7 +25,7 @@ public class ToolRectTest extends ToolTest {
 		tool.press(editor, makeMouseEvent(MouseEvent.MOUSE_PRESSED, 100, 200, false));
 		assertTrue(editor.getBoard().getContents().isEmpty());
 		tool.drag(editor, makeMouseEvent(MouseEvent.MOUSE_DRAGGED, 300, 400, false));
-		//assertTrue(editor.getBoard().getContents().isEmpty());
+		assertTrue(editor.getBoard().getContents().isEmpty());
 		tool.release(editor, makeMouseEvent(MouseEvent.MOUSE_RELEASED, 300, 400, false));
 		List<Clip> list = editor.getBoard().getContents();
 		assertEquals(1, list.size());

@@ -29,14 +29,11 @@ public class ToolImage implements Tool {
 
 	@Override
 	public void drag(EditorInterface i, MouseEvent e) {
-		i.getBoard().removeClip(rect);
 		rect.setGeometry(e.getX(),e.getY(),e.getX()+image.getRight(),e.getY()+image.getBottom());
-		i.getBoard().addClip(rect);
 	}
 
 	@Override
 	public void release(EditorInterface i, MouseEvent e) {
-		i.getBoard().removeClip(rect);
 		i.getBoard().removeClip(image);
 		image.setGeometry(e.getX(),e.getY(),image.getRight() ,image.getBottom());
 		i.getBoard().addClip(image);
@@ -44,7 +41,7 @@ public class ToolImage implements Tool {
 
 	@Override
 	public void drawFeedback(EditorInterface i, GraphicsContext gc) {
-		i.getBoard().draw(gc);
+		rect.draw(gc);
 	}
 
 	@Override
