@@ -13,23 +13,29 @@ public class ToolEllipse implements Tool {
 	public void press(EditorInterface i, MouseEvent e) {
 		x = e.getX();
 		y = e.getY();
-		ellipse = new ClipEllipse(e.getX(),e.getY(),e.getX(),e.getY(),Color.WHITE);
+		ellipse = new ClipEllipse(x,y,x,y,Color.TRANSPARENT);
 	}
 
 	@Override
 	public void drag(EditorInterface i, MouseEvent e) {
-		ellipse.setGeometry(ellipse.getLeft(),ellipse.getTop(),e.getX(),e.getY());
+		i.getBoard().removeClip(ellipse);
+		ellipse.setGeometry(x,y,e.getX(),e.getY());
+		if(ellipse.getLeft() > ellipse.getRight())
+			ellipse.setGeometry(ellipse.getRight(),ellipse.getTop(),ellipse.getLeft(),ellipse.getBottom());
+		if(ellipse.getTop() > ellipse.getBottom())
+			ellipse.setGeometry(ellipse.getLeft(),ellipse.getBottom(),ellipse.getRight(),ellipse.getTop());
+		i.getBoard().addClip(ellipse);
 	}
 
 	@Override
 	public void release(EditorInterface i, MouseEvent e) {
-		if(e.getX() == x && e.getY() == y)
-			return;
+		i.getBoard().removeClip(ellipse);
+		ellipse.setGeometry(x,y,e.getX(),e.getY());
 		if(ellipse.getLeft() > ellipse.getRight())
-			ellipse.setGeometry(ellipse.getRight(),ellipse.getTop(),ellipse.getLeft(),e.getY());
+			ellipse.setGeometry(ellipse.getRight(),ellipse.getTop(),ellipse.getLeft(),ellipse.getBottom());
 		if(ellipse.getTop() > ellipse.getBottom())
 			ellipse.setGeometry(ellipse.getLeft(),ellipse.getBottom(),ellipse.getRight(),ellipse.getTop());
-		ellipse.setColor(Color.RED);
+		ellipse.setColor(Color.BLACK);
 		i.getBoard().addClip(ellipse);
 	}
 

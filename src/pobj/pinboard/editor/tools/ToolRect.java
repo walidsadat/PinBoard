@@ -13,13 +13,17 @@ public class ToolRect implements Tool {
 	public void press(EditorInterface i, MouseEvent e) {
 		x = e.getX();
 		y = e.getY();
-		rect = new ClipRect(x,y,x,y,Color.GREEN);
+		rect = new ClipRect(x,y,x,y,Color.TRANSPARENT);
 	}
 
 	@Override
 	public void drag(EditorInterface i, MouseEvent e) {
 			i.getBoard().removeClip(rect);
 			rect.setGeometry(x,y,e.getX(),e.getY());
+			if(rect.getLeft() > rect.getRight())
+				rect.setGeometry(rect.getRight(),rect.getTop(),rect.getLeft(),rect.getBottom());
+			if(rect.getTop() > rect.getBottom())
+				rect.setGeometry(rect.getLeft(),rect.getBottom(),rect.getRight(),rect.getTop());
 			i.getBoard().addClip(rect);
 	}
 
@@ -31,16 +35,14 @@ public class ToolRect implements Tool {
 			rect.setGeometry(rect.getRight(),rect.getTop(),rect.getLeft(),rect.getBottom());
 		if(rect.getTop() > rect.getBottom())
 			rect.setGeometry(rect.getLeft(),rect.getBottom(),rect.getRight(),rect.getTop());
-		rect.setColor(Color.RED);
+		rect.setColor(Color.BLACK);
 		i.getBoard().addClip(rect);
 	}
 
-	public ClipRect getRect() {
-			return rect;
-	}
+	@Override
 	public void drawFeedback(EditorInterface i, GraphicsContext gc) {
-		i.getBoard().draw(gc);
-}
+			i.getBoard().draw(gc);
+	}
 
 	@Override
 	public String getName(EditorInterface editor) {
