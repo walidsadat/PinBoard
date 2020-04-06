@@ -11,6 +11,8 @@ public class ClipImage extends AbstractClip {
 	
 	public ClipImage(double left, double top, File filename) {
 		super(left, top, 0, 0, Color.TRANSPARENT);
+		if(filename == null)
+			return;
 		image = new Image("file://"+filename.getAbsolutePath());
 		setGeometry(getLeft(),getTop(),image.getWidth()+getLeft(),image.getHeight()+getTop());
 	}

@@ -9,6 +9,11 @@ import pobj.pinboard.editor.EditorInterface;
 public class ToolRect implements Tool {
 	ClipRect rect;
 	double x,y;
+	Color color;
+	public ToolRect(Color color) {
+		this.color = color;
+	}
+
 	@Override
 	public void press(EditorInterface i, MouseEvent e) {
 		x = e.getX();
@@ -27,7 +32,7 @@ public class ToolRect implements Tool {
 
 	@Override
 	public void release(EditorInterface i, MouseEvent e) {
-		rect.setColor(Color.BLACK);
+		rect.setColor(color);
 		i.getBoard().addClip(rect);
 	}
 

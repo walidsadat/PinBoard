@@ -9,6 +9,11 @@ import pobj.pinboard.editor.EditorInterface;
 public class ToolEllipse implements Tool {
 	ClipEllipse ellipse;
 	double x,y;
+	Color color;
+	public ToolEllipse(Color color) {
+		this.color = color;
+	}
+
 	@Override
 	public void press(EditorInterface i, MouseEvent e) {
 		x = e.getX();
@@ -27,7 +32,7 @@ public class ToolEllipse implements Tool {
 
 	@Override
 	public void release(EditorInterface i, MouseEvent e) {
-		ellipse.setColor(Color.BLACK);
+		ellipse.setColor(color);
 		i.getBoard().addClip(ellipse);
 	}
 

@@ -9,11 +9,15 @@ import pobj.pinboard.editor.EditorInterface;
 public class ToolLine implements Tool {
 	ClipLine line;
 	double x,y;
+	Color color;
+	public ToolLine(Color color) {
+		this.color = color;
+	}
 	@Override
 	public void press(EditorInterface i, MouseEvent e) {
 		x = e.getX();
 		y = e.getY();
-		line = new ClipLine(x,y,x,y,Color.BLACK);
+		line = new ClipLine(x,y,x,y,color);
 	}
 
 	@Override
