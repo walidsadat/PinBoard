@@ -8,6 +8,7 @@ import java.util.List;
 import org.junit.Test;
 
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import pobj.pinboard.document.Clip;
 import pobj.pinboard.document.ClipEllipse;
 import pobj.pinboard.editor.EditorInterface;
@@ -17,7 +18,7 @@ import pobj.pinboard.editor.tools.ToolEllipse;
 public class ToolEllipseTest extends ToolTest {
 	
 	private EditorInterface editor = new MockEditor();
-	private Tool tool = new ToolEllipse();
+	private Tool tool = new ToolEllipse(Color.BLACK);
 
 	@Test
 	public void testCreate() {
