@@ -12,6 +12,7 @@ import javafx.scene.paint.Color;
  */
 public class ClipImage extends AbstractClip {
 	Image image;
+	File filename;
 	
 	/**
 	 * Constructeur d'une image
@@ -26,6 +27,7 @@ public class ClipImage extends AbstractClip {
 		super(left, top, 0, 0, Color.TRANSPARENT);
 		if(filename == null)
 			return;
+		this.filename = filename;
 		image = new Image("file://"+filename.getAbsolutePath());
 		setGeometry(getLeft(),getTop(),image.getWidth()+getLeft(),image.getHeight()+getTop());
 	}
@@ -49,7 +51,7 @@ public class ClipImage extends AbstractClip {
 	 */
 	@Override
 	public Clip copy() {
-		return (new ClipImage(getLeft(),getTop(),new File(image.getUrl())));
+		return (new ClipImage(getLeft(),getTop(), filename));
 	}
 
 }
