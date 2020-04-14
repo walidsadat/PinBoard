@@ -6,7 +6,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import pobj.pinboard.document.ClipImage;
 import pobj.pinboard.document.ClipRect;
+import pobj.pinboard.document.Couleur;
 import pobj.pinboard.editor.EditorInterface;
+import pobj.pinboard.editor.commands.CommandAdd;
 
 /**
  * Classe de l'outil image
@@ -14,10 +16,8 @@ import pobj.pinboard.editor.EditorInterface;
  *
  */
 public class ToolImage implements Tool {
-	ClipImage image;
-	File file;
-	ClipRect rect;
-	double x,y;
+	private ClipImage image;
+	private ClipRect rect;
 	
 	/**
 	 * Constructeur de l'outil image
@@ -25,11 +25,8 @@ public class ToolImage implements Tool {
 	 * 			Fichier source de l'image
 	 */
 	public ToolImage(File file) {
-		this.file = file;
 		image = new ClipImage(0,0,file);
 		rect = new ClipRect(0,0,image.getRight(),image.getBottom(),Color.TRANSPARENT);
-		x = 0;
-		y = 0;
 	}
 	
 	
@@ -45,9 +42,10 @@ public class ToolImage implements Tool {
 
 	@Override
 	public void release(EditorInterface i, MouseEvent e) {
-		i.getBoard().removeClip(image);
 		image.setGeometry(e.getX(),e.getY(),image.getRight() ,image.getBottom());
-		i.getBoard().addClip(image);
+		CommandAdd cmd = new CommandAdd(i,image);
+		cmd.execute();
+		i.getUndoStack().addCommand(cmd);
 	}
 
 	@Override

@@ -4,16 +4,18 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import pobj.pinboard.document.ClipRect;
+import pobj.pinboard.document.Couleur;
 import pobj.pinboard.editor.EditorInterface;
+import pobj.pinboard.editor.commands.CommandAdd;
 
 /**
  * Classe de l'outil rectangle
  * @author walidsadat
  */
 public class ToolRect implements Tool {
-	ClipRect rect;
-	double x,y;
-	Color color;
+	private ClipRect rect;
+	private double x,y;
+	private Color color;
 	/**
 	 * Constructeur de l'outil rectangle
 	 * @param color
@@ -43,7 +45,8 @@ public class ToolRect implements Tool {
 	@Override
 	public void release(EditorInterface i, MouseEvent e) {
 		rect.setColor(color);
-		i.getBoard().addClip(rect);
+		(new CommandAdd(i,rect)).execute();
+		i.getUndoStack().addCommand((new CommandAdd(i,rect)));
 	}
 
 	@Override

@@ -11,6 +11,11 @@ import javafx.scene.paint.Color;
 public class ClipLine extends AbstractClip {
 	
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5468862914428455637L;
+
+	/**
 	 * Constructeur d'une ligne
 	 * @param left
 	 * 		coordonnée gauche

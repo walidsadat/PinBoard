@@ -11,6 +11,11 @@ import javafx.scene.paint.Color;
 public class ClipRect extends AbstractClip{
 	
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8038823332020674577L;
+
+	/**
 	 * Constructeur d'un rectangle
 	 * @param left
 	 * 		coordonnée gauche

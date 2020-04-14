@@ -3,7 +3,7 @@ package pobj.pinboard.document;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
-public interface Clip {
+public interface Clip{
 	// Drawing
 	public void draw(GraphicsContext ctx);
 	

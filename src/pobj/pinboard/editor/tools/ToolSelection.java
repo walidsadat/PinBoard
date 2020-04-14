@@ -4,19 +4,24 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import pobj.pinboard.document.Clip;
 import pobj.pinboard.editor.EditorInterface;
+import pobj.pinboard.editor.commands.CommandAdd;
+import pobj.pinboard.editor.commands.CommandMove;
 
 /**
  * Classe de l'outil selection
  * @author walidsadat
  */
 public class ToolSelection implements Tool {
-	double x;
-	double y;
+	private double x;
+	private double y;
+	private double _x,_y;
 
 	@Override
 	public void press(EditorInterface i, MouseEvent e) {
 		x = e.getX();
 		y = e.getY();
+		_x = x;
+		_y = y;
 		if(e.isShiftDown())
 			i.getSelection().toogleSelect(i.getBoard(),e.getX(),e.getY());
 		else
@@ -34,6 +39,7 @@ public class ToolSelection implements Tool {
 
 	@Override
 	public void release(EditorInterface i, MouseEvent e) {
+		i.getUndoStack().addCommand((new CommandMove(i,i.getSelection().getContents(),e.getX() - _x, e.getY() - _y)));
 		i.getBoard().addClip(i.getSelection().getContents());
 	}
 

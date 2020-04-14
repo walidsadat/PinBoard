@@ -1,5 +1,7 @@
 package pobj.pinboard.document;
 
+import java.io.Serializable;
+
 import javafx.scene.paint.Color;
 
 /**
@@ -7,12 +9,14 @@ import javafx.scene.paint.Color;
  * @author walidsadat
  */
 
-public abstract class AbstractClip implements Clip {
+public abstract class AbstractClip implements Clip, Serializable {
+
+	private static final long serialVersionUID = -4428099442306685582L;
 	/** Coordonée de l'element */
-	private double left;
-	private double top;
-	private double right;
-	private double bottom;
+	protected double left;
+	protected double top;
+	protected double right;
+	protected double bottom;
 	
 	/** Couleur de l'element */
 	private Color color;

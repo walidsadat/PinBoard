@@ -10,6 +10,11 @@ import javafx.scene.paint.Color;
 public class ClipEllipse extends AbstractClip {
 	
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3070917392353007894L;
+
+	/**
 	 * Constructeur d'une ellipse
 	 * @param left
 	 * 		coordonnée gauche

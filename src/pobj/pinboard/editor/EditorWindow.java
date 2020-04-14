@@ -1,4 +1,11 @@
 package pobj.pinboard.editor;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
@@ -16,6 +23,10 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 import pobj.pinboard.document.Board;
 import pobj.pinboard.document.Clip;
+import pobj.pinboard.document.ClipGroup;
+import pobj.pinboard.editor.commands.CommandAdd;
+import pobj.pinboard.editor.commands.CommandGroup;
+import pobj.pinboard.editor.commands.CommandUngroup;
 import pobj.pinboard.editor.tools.Tool;
 import pobj.pinboard.editor.tools.ToolEllipse;
 import pobj.pinboard.editor.tools.ToolImage;
@@ -27,13 +38,15 @@ public class EditorWindow implements EditorInterface, ClipboardListener {
 	private Board board;
 	private Canvas canvas;
 	private Selection selection;
-	MenuItem paste;
-	Tool tool;
+	private CommandStack stack;
+	private MenuItem paste;
+	private Tool tool;
 	
 	public EditorWindow(Stage stage) {
 		Clipboard.getInstance().addListener(this);
 		board = new Board();
 		selection = new Selection();
+		stack = new CommandStack();
 		stage.setTitle("PinBoard - <untitled>");
 		
 		//Label
@@ -62,8 +75,33 @@ public class EditorWindow implements EditorInterface, ClipboardListener {
 				//Fermeture fenêtre courante
 				MenuItem close = new MenuItem("Close");
 				close.setOnAction(e ->{Clipboard.getInstance().removeListener(this);stage.close();});
+				//Lecture depuis un fichier
+				MenuItem open = new MenuItem("Open");
+				open.setOnAction(e ->{try {
+										FileInputStream file = new FileInputStream((new FileChooser()).showOpenDialog(stage));
+										ObjectInputStream obj = new ObjectInputStream(file);
+										board = (Board) obj.readObject();
+										obj.close();
+										draw();
+									} catch (Exception e1) {
+										e1.printStackTrace();
+									}
+									});
+				//Sauvegarde dans un fichier
+				MenuItem save = new MenuItem("Save");
+				save.setOnAction(e ->{
+								try {
+									FileOutputStream file = new FileOutputStream((new FileChooser()).showSaveDialog(stage));
+									ObjectOutputStream obj = new ObjectOutputStream(file);
+									obj.writeObject(board);
+									obj.close();
+									draw();
+								} catch (Exception e1) {
+									e1.printStackTrace();
+								}
+							});
 			Menu file = new Menu("File");
-			file.getItems().addAll(new_,close);
+			file.getItems().addAll(new_,close,open,save);
 			//Menu Edit
 				//Copie d'élements
 				MenuItem copy = new MenuItem("Copy");
@@ -72,12 +110,58 @@ public class EditorWindow implements EditorInterface, ClipboardListener {
 				paste = new MenuItem("Paste");
 				if(Clipboard.getInstance().isEmpty())
 					paste.setDisable(true);
-				paste.setOnAction(e->{board.addClip(Clipboard.getInstance().copyFromClipboard());draw();});
+				paste.setOnAction(e->{CommandAdd cmd = new CommandAdd(this,Clipboard.getInstance().copyFromClipboard());
+									cmd.execute();
+									stack.addCommand(cmd);
+									draw();});
 				//Suppression d'elements
 				MenuItem delete = new MenuItem("Delete");
-				delete.setOnAction(e->{board.removeClip(selection.getContents());draw();});
+				delete.setOnAction(e->{CommandAdd cmd = new CommandAdd(this,selection.getContents()); 
+								cmd.undo(); stack.addCommand(cmd);
+								draw();});
+				//Group
+				MenuItem group = new MenuItem("Group");
+				/*group.setOnAction(e->{
+					(new CommandAdd(this,selection.getContents())).undo();
+					ClipGroup g = new ClipGroup();
+					for(Clip c: selection.getContents())
+						g.addClip(c);
+					(new CommandAdd(this,g)).execute();
+					draw();
+				});*/
+				group.setOnAction(e->{
+					CommandGroup cmd = new CommandGroup(this,selection.getContents());
+					cmd.execute(); stack.addCommand(cmd);
+					draw();});
+				
+				//Ungroup
+				MenuItem ungroup = new MenuItem("Ungroup");
+				/*ungroup.setOnAction(e->{
+					for(Clip c: selection.getContents())
+						if(c instanceof ClipGroup) {
+							board.addClip(((ClipGroup) c).getClips());
+							board.removeClip(c);
+						}
+						draw();
+				});*/
+				
+				ungroup.setOnAction(e->{
+					CommandUngroup cmd;
+					for(Clip c : selection.getContents())
+						if(c instanceof ClipGroup) {
+							cmd = new CommandUngroup(this,(ClipGroup) c);
+							cmd.execute();
+							stack.addCommand(cmd);
+						}
+					draw();});
+				//Undo
+				MenuItem undo = new MenuItem("Undo");
+				undo.setOnAction(e->{stack.undo();draw();});
+				//Redo
+				MenuItem redo = new MenuItem("Redo");
+				redo.setOnAction(e->{stack.redo();draw();});
 			Menu edit = new Menu("Edit");
-			edit.getItems().addAll(copy,paste,delete);
+			edit.getItems().addAll(copy,paste,delete,group,ungroup,undo,redo);
 			//Menu Tools
 				//Ligne
 				MenuItem line = new MenuItem("Line");
@@ -154,7 +238,7 @@ public class EditorWindow implements EditorInterface, ClipboardListener {
 	
 	@Override
 	public CommandStack getUndoStack() {
-		return null;
+		return stack;
 	}
 	
 	public void draw() {
@@ -165,5 +249,6 @@ public class EditorWindow implements EditorInterface, ClipboardListener {
 	public void clipboardChanged() {
 		if(!Clipboard.getInstance().isEmpty())
 			paste.setDisable(false);
+			
 	}
 }

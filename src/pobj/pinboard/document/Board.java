@@ -1,5 +1,6 @@
 package pobj.pinboard.document;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.canvas.GraphicsContext;
@@ -10,7 +11,8 @@ import javafx.scene.paint.Color;
  * @author walidsadat
  *
  */
-public class Board {
+public class Board implements Serializable {
+	private static final long serialVersionUID = 6387752629940772629L;
 	/** Liste qui contient les élements de la planche */
 	private List<Clip> list;
 	
@@ -62,7 +64,7 @@ public class Board {
 	 * Dessine la planche dans un contexte graphique
 	 */
 	public void draw(GraphicsContext gc) {
-		(new ClipRect(0,0,gc.getCanvas().getWidth(),gc.getCanvas().getHeight(),Color.WHITE)).draw(gc);
+		(new ClipRect(0,0,gc.getCanvas().getWidth(),gc.getCanvas().getHeight(), Color.WHITE)).draw(gc);
 		for(Clip c:list) {
 			c.draw(gc);
 		}

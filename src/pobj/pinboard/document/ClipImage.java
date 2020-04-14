@@ -4,15 +4,18 @@ import java.io.File;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 
 /**
  * Classe d'une image
  * @author walidsadat
  */
 public class ClipImage extends AbstractClip {
-	Image image;
-	File filename;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3951930574002936932L;
+	private transient Image image;
+	private File filename;
 	
 	/**
 	 * Constructeur d'une image
@@ -24,7 +27,7 @@ public class ClipImage extends AbstractClip {
 	 * 		Fichier source de l'image
 	 */
 	public ClipImage(double left, double top, File filename) {
-		super(left, top, 0, 0, Color.TRANSPARENT);
+		super(left, top, 0, 0, null);
 		if(filename == null)
 			return;
 		this.filename = filename;

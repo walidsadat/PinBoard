@@ -4,16 +4,18 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import pobj.pinboard.document.ClipLine;
+import pobj.pinboard.document.Couleur;
 import pobj.pinboard.editor.EditorInterface;
+import pobj.pinboard.editor.commands.CommandAdd;
 
 /**
  * Classe de l'outil ligne
  * @author walidsadat
  */
 public class ToolLine implements Tool {
-	ClipLine line;
-	double x,y;
-	Color color;
+	private ClipLine line;
+	private double x,y;
+	private Color color;
 	
 	/**
 	 * Constructeur de l'outil ligne
@@ -39,7 +41,8 @@ public class ToolLine implements Tool {
 	@Override
 	public void release(EditorInterface i, MouseEvent e) {
 		line.setGeometry(x,y,e.getX(),e.getY());
-		i.getBoard().addClip(line);
+		(new CommandAdd(i,line)).execute();
+		i.getUndoStack().addCommand((new CommandAdd(i,line)));
 	}
 
 	@Override

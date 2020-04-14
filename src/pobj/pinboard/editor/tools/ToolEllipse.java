@@ -4,16 +4,18 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import pobj.pinboard.document.ClipEllipse;
+import pobj.pinboard.document.Couleur;
 import pobj.pinboard.editor.EditorInterface;
+import pobj.pinboard.editor.commands.CommandAdd;
 
 /**
  * Classe de l'outil ellipse
  * @author walidsadat
  */
 public class ToolEllipse implements Tool {
-	ClipEllipse ellipse;
-	double x,y;
-	Color color;
+	private ClipEllipse ellipse;
+	private double x,y;
+	private Color color;
 	
 	/**
 	 * Constructeur de l'outil ellipse
@@ -43,7 +45,9 @@ public class ToolEllipse implements Tool {
 	@Override
 	public void release(EditorInterface i, MouseEvent e) {
 		ellipse.setColor(color);
-		i.getBoard().addClip(ellipse);
+		CommandAdd cmd = new CommandAdd(i,ellipse);
+		cmd.execute();
+		i.getUndoStack().addCommand(cmd);
 	}
 
 	@Override
