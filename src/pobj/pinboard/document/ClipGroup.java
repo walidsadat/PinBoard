@@ -3,6 +3,7 @@ package pobj.pinboard.document;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 /**
  * Classe de groupe d'élements
@@ -20,7 +21,7 @@ public class ClipGroup extends AbstractClip implements Composite {
 	
 	/** Constructeur du groupe d'élements */
 	public ClipGroup() {
-		super(Double.MAX_VALUE,Double.MAX_VALUE,Double.MIN_VALUE,Double.MIN_VALUE,null);
+		super(Double.MAX_VALUE,Double.MAX_VALUE,Double.MIN_VALUE,Double.MIN_VALUE,Color.TRANSPARENT);
 		list = new ArrayList<>();
 	}
 
@@ -91,5 +92,9 @@ public class ClipGroup extends AbstractClip implements Composite {
 		}
 		left = l; right = r; top = t; bottom = b;
 			
+	}
+	public void setColor(Color color) {
+		for(Clip c:list)
+			c.setColor(color);
 	}
 }

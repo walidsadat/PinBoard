@@ -15,14 +15,14 @@ import pobj.pinboard.editor.commands.CommandAdd;
 public class ToolRect implements Tool {
 	private ClipRect rect;
 	private double x,y;
-	private Color color;
+	private Couleur color;
 	/**
 	 * Constructeur de l'outil rectangle
 	 * @param color
 	 * 			Couleur du rectangle
 	 */
 	public ToolRect(Color color) {
-		this.color = color;
+		this.color = new Couleur(color);
 	}
 
 	
@@ -30,7 +30,7 @@ public class ToolRect implements Tool {
 	public void press(EditorInterface i, MouseEvent e) {
 		x = e.getX();
 		y = e.getY();
-		rect = new ClipRect(x,y,x,y,Color.TRANSPARENT);
+		rect = new ClipRect(x,y,x,y,color.getColor());
 	}
 
 	@Override
@@ -44,9 +44,9 @@ public class ToolRect implements Tool {
 
 	@Override
 	public void release(EditorInterface i, MouseEvent e) {
-		rect.setColor(color);
-		(new CommandAdd(i,rect)).execute();
-		i.getUndoStack().addCommand((new CommandAdd(i,rect)));
+		CommandAdd cmd = new CommandAdd(i,rect);
+		cmd.execute();
+		i.getUndoStack().addCommand(cmd);
 	}
 
 	@Override

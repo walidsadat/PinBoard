@@ -7,6 +7,11 @@ import pobj.pinboard.document.Clip;
 import pobj.pinboard.document.ClipGroup;
 import pobj.pinboard.editor.EditorInterface;
 
+/**
+ * Classe de la commande Group
+ * @author walidsadat
+ *
+ */
 public class CommandGroup implements Command {
 	
 	private ClipGroup group;

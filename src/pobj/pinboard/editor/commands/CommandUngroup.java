@@ -5,6 +5,11 @@ import java.util.List;
 import pobj.pinboard.document.ClipGroup;
 import pobj.pinboard.editor.EditorInterface;
 
+/**
+ * Classe de la commande Ungroup
+ * @author walidsadat
+ *
+ */
 public class CommandUngroup implements Command {
 	
 	private List<ClipGroup> toUngroup = new ArrayList<>();

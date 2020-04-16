@@ -15,7 +15,7 @@ import pobj.pinboard.editor.commands.CommandAdd;
 public class ToolEllipse implements Tool {
 	private ClipEllipse ellipse;
 	private double x,y;
-	private Color color;
+	private Couleur color;
 	
 	/**
 	 * Constructeur de l'outil ellipse
@@ -23,14 +23,14 @@ public class ToolEllipse implements Tool {
 	 * 			Couleur de l'ellipse
 	 */
 	public ToolEllipse(Color color) {
-		this.color = color;
+		this.color = new Couleur(color);
 	}
 
 	@Override
 	public void press(EditorInterface i, MouseEvent e) {
 		x = e.getX();
 		y = e.getY();
-		ellipse = new ClipEllipse(x,y,x,y,Color.TRANSPARENT);
+		ellipse = new ClipEllipse(x,y,x,y,color.getColor());
 	}
 
 	@Override
@@ -44,7 +44,6 @@ public class ToolEllipse implements Tool {
 
 	@Override
 	public void release(EditorInterface i, MouseEvent e) {
-		ellipse.setColor(color);
 		CommandAdd cmd = new CommandAdd(i,ellipse);
 		cmd.execute();
 		i.getUndoStack().addCommand(cmd);

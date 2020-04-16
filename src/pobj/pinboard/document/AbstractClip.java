@@ -19,7 +19,7 @@ public abstract class AbstractClip implements Clip, Serializable {
 	protected double bottom;
 	
 	/** Couleur de l'element */
-	private Color color;
+	private Couleur color;
 	
 	/**
 	 * Constructeur de l'element
@@ -39,7 +39,7 @@ public abstract class AbstractClip implements Clip, Serializable {
 		this.top = top;
 		this.right = right;
 		this.bottom = bottom;
-		this.color = color;
+		this.color = new Couleur(color);
 	}
 
 	/** accès à top */
@@ -108,7 +108,7 @@ public abstract class AbstractClip implements Clip, Serializable {
 	 * Modifie la couleur de l'element
 	 */
 	public void setColor(Color c) {
-		this.color = c;
+		color.setColor(c);
 	}
 	
 	/**
@@ -116,7 +116,7 @@ public abstract class AbstractClip implements Clip, Serializable {
 	 */
 	@Override
 	public Color getColor() {
-		return color;
+		return color.getColor();
 	}
 
 }

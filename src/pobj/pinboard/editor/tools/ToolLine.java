@@ -4,7 +4,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import pobj.pinboard.document.ClipLine;
-import pobj.pinboard.document.Couleur;
 import pobj.pinboard.editor.EditorInterface;
 import pobj.pinboard.editor.commands.CommandAdd;
 

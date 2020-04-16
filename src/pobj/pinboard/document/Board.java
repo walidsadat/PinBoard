@@ -66,6 +66,8 @@ public class Board implements Serializable {
 	public void draw(GraphicsContext gc) {
 		(new ClipRect(0,0,gc.getCanvas().getWidth(),gc.getCanvas().getHeight(), Color.WHITE)).draw(gc);
 		for(Clip c:list) {
+			if(c instanceof ClipImage)
+				((ClipImage) c).rechargerImage();
 			c.draw(gc);
 		}
 		

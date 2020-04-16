@@ -1,9 +1,13 @@
 package pobj.pinboard.document;
 
 import java.io.Serializable;
-
 import javafx.scene.paint.Color;
 
+/**
+ * Classe de couleur
+ * @author walidsadat
+ *
+ */
 public class Couleur implements Serializable {
 
 	private static final long serialVersionUID = 8339907931135669085L;
@@ -23,10 +27,20 @@ public class Couleur implements Serializable {
 		this.blue = color.getBlue();
 	}
 	
+	//Pour convertir Couleur en Color de JavaFX
 	public Color getColor() {
-		return Color.color(red,green,blue,0);
+		return Color.color(red,green,blue,1);
 	}
 	
+	public void setRed(double red) {
+		this.red = red;
+	}
+	public void setGreen(double green) {
+		this.green = green;
+	}
+	public void setBlue(double blue) {
+		this.blue = blue;
+	}
 	public void setColor(Color color) {
 		this.red = color.getRed();
 		this.green = color.getGreen();

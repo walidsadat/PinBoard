@@ -38,8 +38,6 @@ public class ClipRect extends AbstractClip{
 	@Override
 	public void draw(GraphicsContext ctx) {
 		ctx.setFill(getColor());
-		ctx.setStroke(Color.BLACK);
-		ctx.strokeRect(getLeft(),getTop(),getRight()-getLeft(),getBottom()-getTop());
 		ctx.fillRect(getLeft(),getTop(),getRight()-getLeft(),getBottom()-getTop());
 	}
 

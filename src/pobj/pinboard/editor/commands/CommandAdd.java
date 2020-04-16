@@ -6,6 +6,11 @@ import java.util.List;
 import pobj.pinboard.document.Clip;
 import pobj.pinboard.editor.EditorInterface;
 
+/**
+ * Classe de la commande Add
+ * @author walidsadat
+ *
+ */
 public class CommandAdd implements Command {
 	
 	private List<Clip> toAdd = new ArrayList<>();

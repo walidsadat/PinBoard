@@ -4,7 +4,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import pobj.pinboard.document.Clip;
 import pobj.pinboard.editor.EditorInterface;
-import pobj.pinboard.editor.commands.CommandAdd;
 import pobj.pinboard.editor.commands.CommandMove;
 
 /**
@@ -26,7 +25,7 @@ public class ToolSelection implements Tool {
 			i.getSelection().toogleSelect(i.getBoard(),e.getX(),e.getY());
 		else
 			i.getSelection().select(i.getBoard(),e.getX(),e.getY());
-		i.getBoard().removeClip(i.getSelection().getContents());
+		
 	}
 
 	@Override
@@ -40,7 +39,6 @@ public class ToolSelection implements Tool {
 	@Override
 	public void release(EditorInterface i, MouseEvent e) {
 		i.getUndoStack().addCommand((new CommandMove(i,i.getSelection().getContents(),e.getX() - _x, e.getY() - _y)));
-		i.getBoard().addClip(i.getSelection().getContents());
 	}
 
 	@Override
@@ -50,8 +48,7 @@ public class ToolSelection implements Tool {
 
 	@Override
 	public String getName(EditorInterface editor) {
-		// TODO Auto-generated method stub
-		return null;
+		return "ToolSelection";
 	}
 
 }

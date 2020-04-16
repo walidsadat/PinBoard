@@ -6,6 +6,11 @@ import java.util.List;
 import pobj.pinboard.document.Clip;
 import pobj.pinboard.editor.EditorInterface;
 
+/**
+ * Classe de la commande Move
+ * @author walidsadat
+ *
+ */
 public class CommandMove implements Command {
 	
 	private List<Clip> toMove = new ArrayList<>();

@@ -4,15 +4,13 @@ import java.io.File;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 
 /**
  * Classe d'une image
  * @author walidsadat
  */
 public class ClipImage extends AbstractClip {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 3951930574002936932L;
 	private transient Image image;
 	private File filename;
@@ -27,12 +25,16 @@ public class ClipImage extends AbstractClip {
 	 * 		Fichier source de l'image
 	 */
 	public ClipImage(double left, double top, File filename) {
-		super(left, top, 0, 0, null);
+		super(left, top, 0, 0, Color.GREY);
 		if(filename == null)
 			return;
 		this.filename = filename;
 		image = new Image("file://"+filename.getAbsolutePath());
 		setGeometry(getLeft(),getTop(),image.getWidth()+getLeft(),image.getHeight()+getTop());
+	}
+	
+	public void rechargerImage() {
+		image = new Image("file://"+filename.getAbsolutePath());
 	}
 	/**
 	 * Affiche l'image
